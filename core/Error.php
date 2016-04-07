@@ -22,27 +22,28 @@ class Error {
 
     private static function getErrorLevel ($levelNo) {
         $errorLevelMap = [
-            E_ERROR => 'ERROR',
-            E_WARNING => 'WARNING',
-            E_PARSE => 'PARSE_ERROR',
-            E_NOTICE => 'NOTICE',
-            E_CORE_ERROR => 'CORE_ERROR',
-            E_CORE_WARNING => 'CORE_WARNING',
-            E_COMPILE_ERROR => 'COMPILE_ERROR',
-            E_COMPILE_WARNING => 'COMPILE_WARNING',
-            E_USER_NOTICE => 'USER_NOTICE',
-            E_USER_ERROR => 'USER_ERROR',
-            E_USER_WARNING => 'USER_WARNING',
-            E_STRICT => 'STRICT_NOTICE',
-            E_RECOVERABLE_ERROR => 'RECOVERABLE_ERROR',
-            0 => 'EXCEPTION',
+            E_ERROR => ['error_type' => 'ERROR', 'log_type' => 'ERROR'],
+            E_WARNING => ['error_type' => 'WARNING', 'log_type' => 'WARNING'],
+            E_PARSE => ['error_type' => 'PARSE_ERROR', 'log_type' => 'ERROR'],
+            E_NOTICE => ['error_type' => 'NOTICE', 'log_type' => 'NOTICE'],
+            E_CORE_ERROR => ['error_type' => 'CORE_ERROR', 'log_type' => 'ERROR'],
+            E_CORE_WARNING => ['error_type' => 'CORE_WARNING', 'log_type' => 'WARNING'],
+            E_COMPILE_ERROR => ['error_type' => 'COMPILE_ERROR', 'log_type' => 'ERROR'],
+            E_COMPILE_WARNING => ['error_type' => 'COMPILE_WARNING', 'log_type' => 'WARNING'],
+            E_USER_NOTICE => ['error_type' => 'USER_NOTICE', 'log_type' => 'NOTICE'],
+            E_USER_ERROR => ['error_type' => 'USER_ERROR', 'log_type' => 'ERROR'],
+            E_USER_WARNING => ['error_type' => 'USER_WARNING', 'log_type' => 'WARNING'],
+            E_STRICT => ['error_type' => 'STRICT_NOTICE', 'log_type' => 'NOTICE'],
+            E_RECOVERABLE_ERROR => ['error_type' => 'RECOVERABLE_ERROR', 'log_type' => 'ERROR'],
+            0 => ['error_type' => 'EXCEPTION', 'log_type' => 'EXCEPTION'],
         ];
-        return !empty($errorLevelMap[$levelNo]) ? $errorLevelMap[$levelNo] : 'UNKNOWN';
+        return !empty($errorLevelMap[$levelNo]) ? $errorLevelMap[$levelNo] : ['error_type' => 'UNKNOWN', 'log_type' => 'UNKNOWN'];
     }
 
     public static function customErrorHandler($errno, $message, $file, $line, $context) {
+        $type = self::getErrorLevel($errno);
         $errInfo = [
-            'error_no' => self::getErrorLevel($errno),
+            'error_type' => $type['log_type'],
             'error_msg' => $message,
             'error_file' => $file,
             'error_line' => $line,
@@ -53,8 +54,9 @@ class Error {
     }
 
     public static function customExceptionHandler($exception) {
+        $type = self::getErrorLevel($exception->getCode());
         $errInfo = [
-            'error_no' => self::getErrorLevel($exception->getCode()),
+            'error_type' => $type['log_type'],
             'error_msg' => $exception->getMessage(),
             'error_file' => $exception->getFile(),
             'error_line' => $exception->getLine(),
@@ -66,13 +68,14 @@ class Error {
 
     public static function customShutDownHandler() {
         $lastError = error_get_last();
-        $errInfo = ['error_no' => 0, 'error_msg' => '', 'error_flie'=> '', 'error_line' => '', 'error_other' => ''];
+        $errInfo = ['error_type' => 'UNKNOWN', 'error_msg' => '', 'error_flie'=> '', 'error_line' => '', 'error_other' => ''];
         if (!empty($lastError)) {
+            $type = self::getErrorLevel($lastError['type']);
             $errInfo = [
-                'error_no' => self::getErrorLevel($errInfo['type']),
-                'error_msg' => $errInfo['message'],
-                'error_file' => $errInfo['file'],
-                'error_line' => $errInfo['line'],
+                'error_type' => $type['log_type'],
+                'error_msg' => $lastError['message'],
+                'error_file' => $lastError['file'],
+                'error_line' => $lastError['line'],
                 'error_other' => 'from:error_get_last',
             ];
         }
@@ -83,18 +86,19 @@ class Error {
     private static function _write_handle($info, $type) {
         if (empty(self::$_logger)) {
             //没有传入loger处理器,默认用系统的
-            error_log($type.':'.var_export($info, true), 3, '/data/logs/temp.log');
-            return false;
+            return error_log($type.':'.var_export($info, true), 3, '/data/logs/temp.log');
         }
-
+        $self = new self;
+        $self->error_trace = $info;
+        $self->type = $type;
+        return Logger::sys($self);
         //用自定义日志处理器来解决
     }
 
     private static function _email_handle($info, $type){
         if (empty(self::$_logger)) {
             //没有传入loger处理器,默认用系统的
-            error_log($type.':'.var_export($info, true), 1, 'admin@qq.com');
-            return false;
+            return error_log($type.':'.var_export($info, true), 1, 'admin@qq.com');
         }
     }
 

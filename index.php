@@ -10,7 +10,7 @@ include CONF_ROOT . 'Conf.php';
 include CORE_ROOT . 'Error.php';
 
 
-
+print_r($_SERVER);exit();
 Error::init();
 Logger::init();
 
