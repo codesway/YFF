@@ -4,10 +4,10 @@
     * admin     后台应用
     * home      前台应用
 * fromework 框架目录
-    * base
+    * base  基础库
     * conf  配置文件夹
     * core  核心
-    * libs  
+    * libs  第三方类库
     * Initialize.php    框架入口文件
 * runroot   应用入口文件
     *  
