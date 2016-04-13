@@ -1,10 +1,9 @@
 <?php
-namespace Framework\Core;
+namespace YFF\Framework\Core;
 // 记录IP 时间, UA等一系列信息
 class Error {
 
-    private static $_logger;
-    private static $_email;
+    private static $_manager = [];
 
     //发邮件的级别
     private static $_sendEmailLevel = [
@@ -12,12 +11,9 @@ class Error {
     ];
 
     public static function init ($logger, $email) {
-        self::$_logger = $logger;
-        self::$_email = $email;
-
-        set_exception_handler(array('Error', 'customExceptionHandler'));
-        set_error_handler(array("Error","customErrorHandler"));
-        register_shutdown_function(array("Error","customShutDownHandler"));
+        set_exception_handler(['YFF\Framework\Core\Error', 'customExceptionHandler']);
+        set_error_handler(['YFF\Framework\Core\Error','customErrorHandler']);
+        register_shutdown_function(['YFF\Framework\Core\Error','customShutDownHandler']);
     }
 
     private static function getErrorLevel ($levelNo) {
@@ -91,7 +87,7 @@ class Error {
         $self = new self;
         $self->error_trace = $info;
         $self->type = $type;
-        return Logger::sys($self);
+//        return self::$_logger->sys($self);
         //用自定义日志处理器来解决
     }
 

@@ -1,7 +1,8 @@
 <?php
 
 namespace Framework\Core;
-abstract class Logger {
+
+abstract class LoggerHandler {
 
 
 

@@ -1,11 +1,11 @@
 <?php
-use YFF\Framework;
+use YFF\Framework\Initialize;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 define('ROOT', realpath('../../'));
-define('EXT', '.php');
-require_once ROOT . '/framework/Initialize.php';
-$app = new Framework\Initialize();
+require_once ROOT . '/framework/Define.php';   //系统常量
+require_once FRAME_ROOT . '/Initialize.php';   //框架入口
+$app = new Initialize();
 $app->run();
 
 //

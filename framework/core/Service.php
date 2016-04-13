@@ -1,3 +1,8 @@
 <?php
 
-namespace Framework\Core;
+namespace YFF\Framework\Core;
+
+
+class Service {
+
+}
