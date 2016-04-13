@@ -1,17 +1,17 @@
 <?php
 namespace YFF\Framework;
-use YFF\Framework\Core;
+use YFF\Framework\Core\Loader;
 use YFF\Framework\Base;
 //初始化框架内核,ac需要引入此类
 
+define('CORE_ROOT', dirname(__FILE__) . '/core/');
 class Initialize {
 
-
     public static $room = [
-        'base' => ['room_path' => ''],
-        'core' => ['room_path' => ''],
-        'conf' => ['room_path' => ''],
-        'func' => ['room_path' => ''],
+//        'base' => ['room_path' => CORE_ROOT],
+        'core' => ['room_path' => CORE_ROOT],
+//        'conf' => ['room_path' => 'base/'],
+//        'func' => ['room_path' => 'func/'],
     ];
 
 
@@ -21,9 +21,10 @@ class Initialize {
 
     public function run () {
         include_once 'core/Loader.php';
-        Core\Loader::init(self::$room);
+        Loader::init(self::$room);
 //        $db = new Base/DB();
 //        print_r($db);
         $conf = new Conf();
+//        print_r($conf);
     }
 }

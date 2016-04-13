@@ -20,13 +20,13 @@ class Loader {
 
     private static function setPath($conf) {
         $path = array_column($conf, 'room_path');
-        set_include_path(get_include_path() . PATH_SEPARATOR .implode(PATH_SEPARATOR, $path));
+        set_include_path(get_include_path() . ';' .implode(';', $path));
     }
 
     // 可以外部加载
     public static function register ($conf) {
         self::setPath($conf);
-//        spl_autoload_register ( array ($this, 'load' ) );
+//        spl_autoload_register ( array ('Loader', 'load' ) );
     }
 
     private static function load ($class) {
@@ -35,7 +35,8 @@ class Loader {
 //        if (!file_exists($file)) {
 //            throw new \Exception('Loader.load:file not exists');
 //        }
-
+//        include_once $file;
+        print_r(get_include_path());exit();
         include_once $file;
     }
 }
