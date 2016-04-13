@@ -1,7 +1,7 @@
 <?php
 namespace YFF\Framework\base;
 
-class DB {
+class Db {
 
 
 
