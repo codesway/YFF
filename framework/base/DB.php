@@ -1,6 +1,5 @@
 <?php
-namespace Framework\base;
-
+namespace YFF\Framework\base;
 
 class DB {
 
