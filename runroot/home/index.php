@@ -2,8 +2,9 @@
 use YFF\Framework;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-define('APP_PATH', realpath('../../'));
-require_once APP_PATH . '/framework/Initialize.php';
+define('ROOT', realpath('../../'));
+define('EXT', '.php');
+require_once ROOT . '/framework/Initialize.php';
 $app = new Framework\Initialize();
 $app->run();
 
