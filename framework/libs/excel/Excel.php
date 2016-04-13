@@ -1,5 +1,5 @@
 <?php
-
+namespace Framework\Libs\Excel;
 
 class Excel {
 

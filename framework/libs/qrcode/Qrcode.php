@@ -1,4 +1,5 @@
 <?php
+namespace Framework\Libs\Qrcode;
 
 class Qrcode {
 

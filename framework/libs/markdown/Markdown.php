@@ -1,5 +1,5 @@
 <?php
-
+namespace Framework\Libs\Markdown;
 
 
 //markdown 代理类

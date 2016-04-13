@@ -1,5 +1,5 @@
 <?php
-
+namespace Framework\Libs\Mail;
 class Mail {
 
 

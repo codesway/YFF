@@ -1,5 +1,5 @@
 <?php
-
+namespace Framework\Core;
 // 记录IP 时间, UA等一系列信息
 class Error {
 
