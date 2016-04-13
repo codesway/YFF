@@ -3,22 +3,17 @@
 namespace Framework\base;
 
 
-abstract class Filter {
+class Filter {
 
-
-    public function _before() {
-
+    private function __construct(){
 
     }
 
-    public function exec () {
-
-
-    }
-
-    public function _after() {
+    public static function init() {
 
     }
 
+    public static function get() {
 
+    }
 }

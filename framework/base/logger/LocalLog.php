@@ -1,7 +1,7 @@
 <?php
+namespace Framework\Base\Logger;
 
-
-class Logger {
+class LocalLogger {
 
     private function __construct(){
 
