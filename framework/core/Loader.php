@@ -32,12 +32,13 @@ class Loader {
 
     // 可以外部加载
     public static function registerPath ($conf) {
+        self::init();
 //        self::setPath($conf);
 //        spl_autoload_register ( array ('Loader', 'load' ) );
     }
 
     public static function register ($conf) {
-
+        self::init();
     }
 
     private static function load ($class) {
