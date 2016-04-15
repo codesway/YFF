@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Libs;
+namespace YFF\Framework\Libs;
 class Com {
 
     private static $_conf;
