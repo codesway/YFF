@@ -1,9 +1,7 @@
 <?php
 namespace YFF\Framework\Core;
 
-/**
- * Class Conf
- */
+
 class Conf {
 
     private static $isLoaded = array();
@@ -65,7 +63,7 @@ class Conf {
     }
 
     public static function set($key,$value){
-        self::$confData[$key] = $value;
+      self::$confData[$key] = $value;
     }
 
     public static function getIncludePath() {
