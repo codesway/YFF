@@ -6,10 +6,10 @@ class Timer{
     private $_prefix = 'Timer_';
     private $_timers = [];
     private $_start = 0;
-    public function __construct(){
-        $this->_start = microtime(true);
-    }
+    
+    public function __construct () {
 
+    }
     /** 记录开始时间
      * @param String $key 标记
      */
@@ -64,6 +64,10 @@ class Timer{
      */
     private function getKey($key){
         return $this->_prefix.$key;
+    }
+
+    public function getAllTimers() {
+      return $this->_timers;
     }
 
     public function __destruct(){

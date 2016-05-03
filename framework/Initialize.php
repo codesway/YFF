@@ -16,12 +16,14 @@ class Initialize {
     }
 
     public function run () {
-        $timer = new Core\Timer();
-        $timer->start('frame_loader');
-        Core\Service::init();   //注册依赖服务
-        $error = Core\Error::init(1,2);
-        $timer->end('frame_loader');
-        echo $timer->getRunTime('frame_loader');
+      $timer = new Core\Timer();
+      $timer->start('frame_loader');
+      Core\Service::init();   //注册依赖服务
+      $error = Core\Error::init(1,2);
+      $timer->end('frame_loader');
+
+      print_r(Core\Conf::getIncludePath()); 
+      echo $timer->getRunTime('frame_loader');
 //        print_r($error);exit();
     }
 }

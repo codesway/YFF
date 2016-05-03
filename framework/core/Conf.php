@@ -9,34 +9,55 @@ class Conf {
     private static $isLoaded = array();
     private static $confData = array();
 
-    private static function _init () {
+    public static function _init () {
 
     }
 
-
     public static function load($paths) {
-        self::_init();
-
-        if (is_file($paths)) {
-            require_once $paths;
-            self::$isLoaded[$paths] = true;
+      if (!is_array($paths)) {
+        $paths = array($paths);
+      }
+      foreach ($paths as $path) {
+        if (is_file($path)) {
+          self::loadFile($path);
+        } else if (is_dir($path)){
+          self::loadDir($path);
+        } else {
+          throw new Exception('conf.load:file not exists');
         }
+      }
+    }
 
-        foreach($paths as $path) {
-            if (isset(self::$isLoaded[$path])) {
-                continue;
-            }
-            if (is_readable($path)) {
-                self::$isLoaded[$path] = true;
-            } else {
-                throw new Exception('conf.load:file not exists');
-            }
+    private static function loadFile ($file) {
+      if (isset(self::$isLoaded[$file])) {
+          return true;
+      }
+      if (!is_readable($file)) {
+        throw new Exception('conf.load:file not readable');
+      }
+      require_once $file;
+      self::$isLoaded[$file] = true;
+    }
+
+    //只读取当前目录，不能递归
+    private static function loadDir ($dir) {
+      $dir = rtrim($dir, '/') . '/';
+      $pathDir = scandir ($dir);
+      $files = array_filter($pathDir, function ($file) use ($dir) {
+        return (is_file($dir . $file) && is_readable($dir . $file));
+      });
+
+      foreach ($files as $file) {
+        if (isset(self::$isLoaded[$dir . $file])) {
+            continue;
         }
+        require_once $dir . $file;
+        self::$isLoaded[$dir . $file] = true;
+      }
     }
 
 
     public static function get($key,$default=null){
-        self::_init();
         if (isset(self::$confData[$key])) {
             return self::$confData[$key];
         }
@@ -45,6 +66,10 @@ class Conf {
 
     public static function set($key,$value){
         self::$confData[$key] = $value;
+    }
+
+    public static function getIncludePath() {
+      return self::$isLoaded;
     }
 
     public static function clear(){
