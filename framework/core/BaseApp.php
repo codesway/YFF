@@ -8,11 +8,6 @@ class BaseApp {
 
   }
 
-  protected function init($app, $filters) {
-    $filterHandler = new FilterHandler();
-    $filterHandler->init($filters);
-    $this->filterHandler = $filterHandler;
-  }
 
   protected function run() {
 

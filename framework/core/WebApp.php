@@ -1,24 +1,29 @@
 <?php
 
 namespace YFF\Framework\Core;
+
 use YFF\Framework\Core\BaseApp;
+use YFF\Framework\Initialize;
+use YFF\Framework\Core\FilterHandler;
+use YFF\Framework\Core\Conf;
 
 class WebApp extends BaseApp{
 
 
   public $initialize = null;
 
+  public $filterHandle = null;
+
   public function __construct(Initialize $Initialize) {
-    $this->initialize = $Initialize;
     parent::__construct();
+    $this->initialize = $Initialize;
+    $this->filterHandle = new FilterHandler($this->initialize);
+    $this->filterHandle->init(Conf::get('filters'));
   }
 
-  public function init () {
-    parent::init($this, $filters);
-  }
-
-  public function run () {
+  public function bootstrap () {
     parent::run();
+    exit( 'YFF is load ok');
     if (false === $this->filterHandler->execute('init')) {
         return;
     }
@@ -34,7 +39,9 @@ class WebApp extends BaseApp{
     if (false === $this->filterHandler->execute('output')) {
         return;
     }
+
   }
+
 
   public function __destruct() {
 
