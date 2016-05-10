@@ -26,9 +26,7 @@ class FilterHandler {
     } else {
       foreach (self::$filterStep as $default) {
         $className = ucfirst($default) . 'Filter';
-        if (file_exists(FRAME_ROOT . 'base/filter/' . $className . '.php')) {
-          $this->importFilters[$default] = new $className();
-        }
+        $this->importFilters[$default] = new $className();
       }
     }
 

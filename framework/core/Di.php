@@ -24,22 +24,14 @@ class Di {
     self::$ioc[$k] = $c;
   }
 
-  public function get($k){
-    $obj = self::$ioc[$k];
-    return $obj();
-  }
-
   public static function getIoc() {
     return self::$ioc;
   }
 
   public function __get($k) {
-    return $this->get($k);
+    $obj = self::$ioc[$k];
+    return $obj();
   }
 
-  public function __call($method, $args) {
-    $obj = self::$ioc[$method];
-    return $obj($args);
-  }
 
 }

@@ -18,7 +18,7 @@ class Loader {
         // self::setPath(self::$_YYF_ROOT);
         // spl_autoload_register ( array ($this, 'register') );
     }
-    
+
     /**
     return array(
       'NoahBuscher\\Macaw\\' => array($vendorDir . '/noahbuscher/macaw'),
@@ -73,9 +73,9 @@ class Loader {
             return $path . $parse['class'] . EXT;
           }
         }
-        throw new \Exception('YFF.Loader:' . $class . ' not exist');
+        // throw new \Exception('YFF.Loader:' . $class . ' not exist');
       }
-
+      
     }
 
     private function parseFileInfo($namespace) {

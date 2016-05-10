@@ -13,7 +13,7 @@ class InputFilter extends FilterHelper{
 
   public function execut () {
 
-
+    echo 'this is input filter';
   }
 
   public function after () {

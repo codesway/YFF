@@ -26,7 +26,8 @@ class WebApp extends BaseApp{
 
   public function bootstrap () {
     parent::run();
-    print_r($this->di->filterHandler->execute('init')); 
+    print_r($this->di->filterHandle->getRunStep());
+    print_r($this->di->filterHandler->execute('input'));
     exit('YFF is runing!');
   }
 
