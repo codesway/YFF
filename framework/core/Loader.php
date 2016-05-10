@@ -20,27 +20,27 @@ class Loader {
     }
 
     /**
-    return array(
-      'NoahBuscher\\Macaw\\' => array($vendorDir . '/noahbuscher/macaw'),
-    );
+    * return array(
+    *  'NoahBuscher\\Macaw\\' => array($vendorDir . '/noahbuscher/macaw'),
+    * );
     */
     public function registerNamespaces(array $namespace) {
       $this->namespace = array_unique(array_merge($this->namespace, $namespace));
     }
 
     /**
-    return array(
-    'className' => 'xxx/xxx.php',
-  );
+    * return array(
+    * 'className' => 'xxx/xxx.php',
+    * );
     */
     public function registerClassMap(array $class) {
       $this->classMap = array_unique(array_merge($this->classMap, $namespace));
     }
 
     /**
-    return array(
-      'Monolog' => array($vendorDir . '/monolog/monolog/src'),
-    );
+    * return array(
+    *  'Monolog' => array($vendorDir . '/monolog/monolog/src'),
+    * );
     */
     public function registerDirs (array $dirs) {
       $this->dirs = array_unique(array_merge($this->dirs, $namespace));
