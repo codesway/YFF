@@ -65,17 +65,29 @@ class Loader {
       if (!empty($this->classMap[$class])){
         return $this->classMap[$class];
       }
+      $file = '';
 
       if(!empty($this->namespace)) {
-        $parse = $this->parseFileInfo($class);
-        foreach ($this->namespace as $name=>$path) {
-          if ($parse['namespace'] == $name && file_exists($path . $parse['class'] . EXT)) {
-            return $path . $parse['class'] . EXT;
+        if (strpos($class, '\\')) {
+          $parse = $this->parseFileInfo($class);
+          foreach ($this->namespace as $name=>$path) {
+            if ($parse['namespace'] == $name && file_exists($path . $parse['class'] . EXT)) {
+              $file = $path . $parse['class'] . EXT;
+              continue;
+            }
+          }
+        } else {
+          foreach ($this->namespace as $name=>$path) {
+            if (file_exists($path . $class . EXT)) {
+              $file = $path . $class . EXT;
+              continue;
+            }
           }
         }
         // throw new \Exception('YFF.Loader:' . $class . ' not exist');
       }
-      
+
+      return $file;
     }
 
     private function parseFileInfo($namespace) {
