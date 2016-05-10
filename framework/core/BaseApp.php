@@ -3,9 +3,10 @@
 namespace YFF\Framework\Core;
 
 class BaseApp {
-
-  protected function __construct () {
-
+  protected $di = null;
+  
+  protected function __construct ($di) {
+    $this->di = $di;
   }
 
 

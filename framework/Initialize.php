@@ -15,28 +15,35 @@ class Initialize {
     public function __construct(){
         require_once FRAME_ROOT . 'core/Loader.php';
         Core\Loader::init();
+        $this->di = Core\Di::init();
 //        Core\Conf::load(MAIN_CONF_ROOT);  //加载所有配置
     }
 
     public function run () {
       $timer = new Core\Timer();
       $timer->start('frame_loader');
-      $this->di = Core\Service::init();   //注册依赖服务
+      $this->registerDiService();
       $this->process(!empty($argv) ? self::TOOL_MODE : self::WEB_MODE);
-      Core\Error::init(1,2);
-      print_r(Core\Conf::getIncludePath());
       $timer->end('frame_loader');
       echo $timer->getRunTime('frame_loader');
+    }
+
+    private function registerDiService () {
+      $this->di->set('initialize', function () {
+          return $this;
+      });
+      $this->di->set('errorHandler', function() {
+          return Core\Error::init(1,2);
+      });
     }
 
     //app处理模式按情况来定
     private function process ($mode) {
       if ($mode == self::TOOL_MODE) {
-        $modeApp = new Core\ToolApp($this);
+        $modeApp = new Core\ToolApp($this->di);
       } else {
-        $modeApp = new Core\WebApp($this);
+        $modeApp = new Core\WebApp($this->di);
       }
-
       $modeApp->bootstrap();
     }
 }
