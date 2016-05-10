@@ -33,8 +33,13 @@ class Di {
     return self::$ioc;
   }
 
+  public function __get($k) {
+    return $this->get($k);
+  }
+
   public function __call($method, $args) {
-    return self::$ioc[$method]($args);
+    $obj = self::$ioc[$method];
+    return $obj($args);
   }
 
 }

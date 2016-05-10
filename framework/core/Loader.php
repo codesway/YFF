@@ -1,16 +1,11 @@
 <?php
 namespace YFF\Framework\Core;
-
 class Loader {
 
     private static $loader;
-
-    private static $_YYF_ROOT = [
-        'base' => ['path' => FRAME_ROOT . 'base/'],
-        'core' => ['path' => FRAME_ROOT . 'core/'],
-        'conf' => ['path' => FRAME_ROOT . 'conf/'],
-        'func' => ['path' => FRAME_ROOT . 'func/'],
-    ];
+    private $dirs = [];
+    private $namespace = [];
+    private $classMap = [];
 
     public static function init() {
         if (self::$loader == NULL) {
@@ -20,53 +15,74 @@ class Loader {
     }
 
     private function __construct() {
-        self::setPath(self::$_YYF_ROOT);
-        spl_autoload_register ( array ($this, 'load') );
+        // self::setPath(self::$_YYF_ROOT);
+        // spl_autoload_register ( array ($this, 'register') );
+    }
+    
+    /**
+    return array(
+      'NoahBuscher\\Macaw\\' => array($vendorDir . '/noahbuscher/macaw'),
+    );
+    */
+    public function registerNamespaces(array $namespace) {
+      $this->namespace = array_unique(array_merge($this->namespace, $namespace));
     }
 
-
-    private static function setPath($framePath) {
-        $path = array_column($framePath, 'path');
-        set_include_path(get_include_path() . ';' .implode(';', $path));
+    /**
+    return array(
+    'className' => 'xxx/xxx.php',
+  );
+    */
+    public function registerClassMap(array $class) {
+      $this->classMap = array_unique(array_merge($this->classMap, $namespace));
     }
 
-    // 可以外部加载
-    public static function registerPath ($conf) {
-        self::init();
-//        self::setPath($conf);
-//        spl_autoload_register ( array ('Loader', 'load' ) );
+    /**
+    return array(
+      'Monolog' => array($vendorDir . '/monolog/monolog/src'),
+    );
+    */
+    public function registerDirs (array $dirs) {
+      $this->dirs = array_unique(array_merge($this->dirs, $namespace));
     }
 
-    public static function register ($conf) {
-        self::init();
+    public function register () {
+      spl_autoload_register([$this, 'load']);
     }
 
-    private static function load ($class) {
-        if (false !== strpos($class,'\\')) {
-            // 框架需要加载的
-            $class = trim($class, 'YFF');
-            $className = substr($class, strrpos($class, '\\') + 1);
-            include_once $className . EXT;
-            if (file_exists($className . EXT)) {
-                include_once $className . EXT;
-            }
-//            foreach (self::$_YYF_ROOT as $path) {
-//                if (file_exists($path['path'] . $className . EXT)) {
-//                    include_once $path['path'] . $className . EXT;
-//                    break;
-//                }
-//            }
-        }else{
-
+    private function load($class){
+        if ($file = $this->findFile($class)) {
+            include $file;
+            return true;
         }
-//        print_r($class);exit();
-//        $class = substr($class, strrpos($class, '\\') + 1);
-//        $file = $class . '.php';
-////        if (!file_exists($file)) {
-////            throw new \Exception('Loader.load:file not exists');
-////        }
-////        include_once $file;
-//        print_r(get_include_path());exit();
-//        include_once $file;
     }
+
+    private function findFile($class) {
+      if ('\\' == $class[0]) {
+        $class = substr($class, 1);
+      }
+
+      if (!empty($this->classMap[$class])){
+        return $this->classMap[$class];
+      }
+
+      if(!empty($this->namespace)) {
+        $parse = $this->parseFileInfo($class);
+        foreach ($this->namespace as $name=>$path) {
+          if ($parse['namespace'] == $name && file_exists($path . $parse['class'] . EXT)) {
+            return $path . $parse['class'] . EXT;
+          }
+        }
+        throw new \Exception('YFF.Loader:' . $class . ' not exist');
+      }
+
+    }
+
+    private function parseFileInfo($namespace) {
+      return [
+        'namespace' => substr($namespace, 0, strrpos($namespace, '\\')),
+        'class' => substr($namespace, strrpos($namespace, '\\') + 1),
+      ];
+    }
+
 }

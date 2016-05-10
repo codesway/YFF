@@ -1,12 +1,22 @@
 <?php
 
+namespace YFF\Framework\Base\Filter;
 
-//输入过滤器
+use YFF\Framework\Base\Filter\FilterHelper;
 
-
-
-class InputFilter extends Filter{
-
+class InputFilter extends FilterHelper{
 
 
+  public function before() {
+
+  }
+
+  public function execut () {
+
+
+  }
+
+  public function after () {
+
+  }
 }

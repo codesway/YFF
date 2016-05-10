@@ -1,6 +1,7 @@
 <?php
 
 namespace YFF\Framework\Core;
+use YFF\Framework\Base\Filter;
 
 class FilterHandler {
   public static $filterStep = [
@@ -23,13 +24,23 @@ class FilterHandler {
         $this->importFilters[$type] = new $filterConf;
       }
     } else {
-
+      foreach (self::$filterStep as $default) {
+        $className = ucfirst($default) . 'Filter';
+        if (file_exists(FRAME_ROOT . 'base/filter/' . $className . '.php')) {
+          $this->importFilters[$default] = new $className();
+        }
+      }
     }
 
   }
 
-  public function execute() {
-
+  public function execute($filter) {
+    if (empty($this->importFilters[$filter])) {
+      return false;
+    }
+    self::$importFilters[$filter]->before();
+    self::$importFilters[$filter]->execute();
+    self::$importFilters[$filter]->after();
   }
 
 }

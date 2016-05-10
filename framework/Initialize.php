@@ -13,8 +13,9 @@ class Initialize {
     const WEB_MODE = 'WebApp';
 
     public function __construct(){
-        require_once FRAME_ROOT . 'core/Loader.php';
-        Core\Loader::init();
+        require_once FRAME_ROOT . '/core/Loader.php';
+        $loader = Core\Loader::init();
+        require_once FRAME_ROOT . '/core/Service.php';
         $this->di = Core\Di::init();
 //        Core\Conf::load(MAIN_CONF_ROOT);  //加载所有配置
     }
@@ -32,6 +33,7 @@ class Initialize {
       $this->di->set('initialize', function () {
           return $this;
       });
+      
       $this->di->set('errorHandler', function() {
           return Core\Error::init(1,2);
       });

@@ -1,13 +1,7 @@
 <?php
 
-namespace YFF\Framework\Core;
+$loader->registerNamespaces([
+    'YFF\Framework\Core' => FRAME_ROOT . '/core/',
+]);
 
-
-class Service {
-    private static $di;
-
-    public static function init () {
-        return self::$di;
-    }
-
-}
+$loader->register();
