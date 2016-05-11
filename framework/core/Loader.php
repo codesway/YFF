@@ -76,14 +76,14 @@ class Loader {
           foreach ($this->namespace as $name=>$path) {
             if ($parse['namespace'] == $name && file_exists($path . $parse['class'] . EXT)) {
               $file = $path . $parse['class'] . EXT;
-              continue;
+              break;
             }
           }
         } else {
           foreach ($this->namespace as $name=>$path) {
             if (file_exists($path . $class . EXT)) {
               $file = $path . $class . EXT;
-              continue;
+              break;
             }
           }
         }
