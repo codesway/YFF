@@ -26,6 +26,7 @@ class Loader {
     */
     public function registerNamespaces(array $namespace) {
       $this->namespace = array_unique(array_merge($this->namespace, $namespace));
+      return $this;
     }
 
     /**
@@ -35,6 +36,7 @@ class Loader {
     */
     public function registerClassMap(array $class) {
       $this->classMap = array_unique(array_merge($this->classMap, $namespace));
+      return $this;
     }
 
     /**
@@ -44,6 +46,7 @@ class Loader {
     */
     public function registerDirs (array $dirs) {
       $this->dirs = array_unique(array_merge($this->dirs, $namespace));
+      return $this;
     }
 
     public function register () {

@@ -12,6 +12,4 @@ $loader->registerNamespaces([
     'YFF\Framework\Base\Interface' => FRAME_ROOT . '/interface/',
     'YFF\Framework\Base\Libs' => FRAME_ROOT . '/libs/',
     'YFF\Framework\Base\Models' => FRAME_ROOT . '/models/',
-]);
-
-$loader->register();
+])->register();
