@@ -1,4 +1,5 @@
 # YFF 原意指年轻人的第一个框架
+## Y:young, F:frist, F:framework
 ##目录介绍
 * apps      应用目录
     * admin     后台应用
